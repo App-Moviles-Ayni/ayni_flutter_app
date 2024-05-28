@@ -42,61 +42,77 @@ class _TransactionListScreenState extends State<TransactionListScreen2> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Transactions'),
-      ),
-      body: FutureBuilder<List<Transaction>>(
-        future: _transactions,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No transactions found'));
-          } else {
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columns: const [
-
-                  DataColumn(label: Text('Cost Name')),
-                  DataColumn(label: Text('Date')),
-
-                  DataColumn(label: Text('Type')),
-                  DataColumn(label: Text('Price')),
-
-
-                ],
-                rows: snapshot.data!.map((transaction) {
-                  return DataRow(
-                    cells: [
-
-                      DataCell(Text(transaction.costName), onTap: () {
-                        _showTransactionDetails(context, transaction);
-                      }),
-                      DataCell(Text(transaction.date), onTap: () {
-                        _showTransactionDetails(context, transaction);
-                      }),
-
-                      DataCell(Text(transaction.transactionType), onTap: () {
-                        _showTransactionDetails(context, transaction);
-                      }),
-                      DataCell(Text(transaction.price.toString()), onTap: () {
-                        _showTransactionDetails(context, transaction);
-                      }),
-
-                    ],
-                  );
-                }).toList(),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      leading: IconButton(
+    icon: const Icon(Icons.arrow_back),
+    onPressed: () {
+      // Aquí puedes añadir la navegación hacia atrás cuando tengas la pantalla de inicio implementada
+    },
+  ),
+      title: const Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Text('Transactions', textAlign: TextAlign.center),
+      SizedBox(height: 8),
+      Text('Tap rows show more info!', textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
+    ],
+  ),
+  centerTitle: true,
+      
+    ),
+    body: FutureBuilder<List<Transaction>>(
+      future: _transactions,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text('No transactions found'));
+        } else {
+          return Column(
+            children: [
+              SizedBox(height: 16), // Añade espacio encima de la tabla
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columns: const [
+                    DataColumn(label: Text('Name')),
+                    DataColumn(label: Text('Date')),
+                    DataColumn(label: Text('Type')),
+                    DataColumn(label: Text('Price')),
+                  ],
+                  rows: snapshot.data!.map((transaction) {
+                    return DataRow(
+                      cells: [
+                        DataCell(Text(transaction.costName), onTap: () {
+                          _showTransactionDetails(context, transaction);
+                        }),
+                        DataCell(Text(transaction.date), onTap: () {
+                          _showTransactionDetails(context, transaction);
+                        }),
+                        DataCell(Text(transaction.transactionType), onTap: () {
+                          _showTransactionDetails(context, transaction);
+                        }),
+                        DataCell(Text(transaction.price.toString()), onTap: () {
+                          _showTransactionDetails(context, transaction);
+                        }),
+                      ],
+                    );
+                  }).toList(),
+                ),
               ),
-            );
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
+            ],
+          );
+        }
+      },
+    ),
+    floatingActionButton: Container(
+      width: MediaQuery.of(context).size.width * 0.9, // Ajusta el ancho del botón
+      child: FloatingActionButton.extended(
         onPressed: () async {
           final newTransaction = await Navigator.push(
             context,
@@ -106,10 +122,14 @@ class _TransactionListScreenState extends State<TransactionListScreen2> {
             _addTransaction(newTransaction);
           }
         },
-        child: Icon(Icons.add),
+        label: Text('Add Transaction'), // Cambia el icono por un texto
+        icon: Icon(Icons.add),
+        backgroundColor: Colors.green,
       ),
-    );
-  }
+    ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+  );
+}
 
   void _showTransactionDetails(BuildContext context, Transaction transaction) {
     showDialog(
@@ -144,6 +164,7 @@ class _TransactionListScreenState extends State<TransactionListScreen2> {
     );
   }
 }
+
 
 class Item {
   Item({

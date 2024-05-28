@@ -20,11 +20,18 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   String? _quantity;
   int? _userId;
 
+  // Lista de opciones para el DropdownMenu
+  final List<String> transactionTypes = ['Cost', 'Profits'];
+  // Estado para mantener la opción seleccionada
+  String? _selectedTransactionType;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Transaction'),
+        title: const Text('Add Transaction'),
+        backgroundColor: Colors.green,
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -77,13 +84,26 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                   return null;
                 },
               ),
-              TextFormField(
+              // Cambiar TextFormField por DropdownButtonFormField
+              DropdownButtonFormField(
                 decoration: InputDecoration(labelText: 'Transaction Type'),
+                value: _selectedTransactionType,
+                items: transactionTypes.map((type) {
+                  return DropdownMenuItem(
+                    value: type,
+                    child: Text(type),
+                  );
+                }).toList(),
+                onChanged: (String? value) {
+                  setState(() {
+                    _selectedTransactionType = value;
+                    _transactionType = value; // Guardar la opción seleccionada
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter transaction type';
+                    return 'Please select transaction type';
                   }
-                  _transactionType = value;
                   return null;
                 },
               ),
@@ -127,7 +147,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
@@ -146,7 +166,11 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                     Navigator.pop(context, transaction);
                   }
                 },
-                child: Text('Add Transaction'),
+                style: ButtonStyle(
+                  foregroundColor: WidgetStateProperty.all<Color>(Colors.black),
+                  backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
+                ),
+                child: const Text('Finish'),
               ),
             ],
           ),
