@@ -1,7 +1,9 @@
+import 'package:ayni_flutter_app/finance_screens/screens/transaction_table_main.dart';
+import 'package:ayni_flutter_app/finance_screens/screens/transaction_panels.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
@@ -9,12 +11,9 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: TransactionListScreen2(),
     );
   }
 }
