@@ -1,4 +1,4 @@
-import 'package:ayni_flutter_app/home_screens/screens/home_list_screen.dart';
+import 'package:ayni_flutter_app/home_screens/screens/products_list_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +15,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeListScreen(), // Configura HomeListScreen como la pantalla inicial
+      home: ProductsListScreen()
     );
   }
 }
