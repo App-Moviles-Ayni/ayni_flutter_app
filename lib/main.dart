@@ -1,3 +1,4 @@
+import 'package:ayni_flutter_app/home_screens/screens/home_list_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,12 +10,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return MaterialApp(
+      title: 'Tu Aplicación',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: HomeListScreen(), // Configura HomeListScreen como la pantalla inicial
     );
   }
 }
