@@ -31,6 +31,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       appBar: AppBar(
         title: const Text('Add Transaction'),
         backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
         centerTitle: true,
       ),
       body: Padding(

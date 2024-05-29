@@ -48,5 +48,31 @@ class TransactionService {
     }
   }
 
-  
+  Future<void> updateTransaction(int id, Transaction transaction) async {
+    final http.Response response = await http.put(
+      Uri.parse('$baseUrl/$id'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(transaction.toJson()),
+    );
+
+    if (response.statusCode != HttpStatus.ok) {
+      throw Exception('Failed to update transaction');
+    }
+  }
+
+  Future<void> deleteTransaction(int id) async {
+  final http.Response response = await http.delete(
+    Uri.parse('$baseUrl/$id'),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  );
+
+  if (response.statusCode != HttpStatus.noContent) {
+    throw Exception('Failed to delete transaction');
+  }
+}
+
 }

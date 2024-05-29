@@ -1,4 +1,4 @@
-import 'package:ayni_flutter_app/finance_screens/screens/transaction_table_main.dart';
+
 import 'package:ayni_flutter_app/finance_screens/screens/transaction_panels.dart';
 import 'package:flutter/material.dart';
 
