@@ -20,7 +20,6 @@ class ProductsService {
 
         return maps.map((map) => Products.fromJson(map)).toList();
       } else if (jsonResponse is List<dynamic>) {
-        // Manejar el caso en el que el JSON principal es una lista en lugar de un mapa
         return jsonResponse.map((map) => Products.fromJson(map)).toList();
       } else {
         throw Exception('Unexpected JSON structure');
