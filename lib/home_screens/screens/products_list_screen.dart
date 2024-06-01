@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:ayni_flutter_app/shared/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:ayni_flutter_app/home_screens/screens/crops_list_screen.dart';
 import 'package:ayni_flutter_app/home_screens/services/products_service.dart';
@@ -31,7 +32,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
   }
 
   void _startShuffleTimer() {
-    _timer = Timer.periodic(Duration(seconds: 10), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 10), (Timer timer) {
       _shuffleProducts();
     });
   }
@@ -56,23 +57,23 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.menu),
+          icon: const Icon(Icons.menu),
           onPressed: () {},
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {},
           ),
         ],
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Text(
                     'Welcome, Jose.',
                     style: TextStyle(fontSize: 35),
@@ -89,7 +90,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                     ),
                     child: Column(
                       children: [
-                        Text('Find your product',
+                        const Text('Find your product',
                             style:
                                 TextStyle(fontSize: 20, color: Colors.white)),
                         TextField(
@@ -111,7 +112,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Latest Crops', style: TextStyle(fontSize: 24)),
+                      const Text('Latest Crops', style: TextStyle(fontSize: 24)),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -120,7 +121,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                                 builder: (context) => CropsListScreen()),
                           );
                         },
-                        child: Text('See All ->',
+                        child: const Text('See All ->',
                             style: TextStyle(color: Colors.red)),
                       ),
                     ],
@@ -148,11 +149,11 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                               top: 8.0,
                               left: 8.0,
                               child: Container(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 8.0, vertical: 4.0),
                                 child: Text(
                                   _shuffledProducts[index].name,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,
                                   ),
@@ -165,31 +166,31 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
+                const Padding(
+                  padding: EdgeInsets.all(5.0),
                   child:
-                      Text('Products On Sale', style: TextStyle(fontSize: 24)),
+                    Text('Products On Sale', style: TextStyle(fontSize: 24)),
                 ),
                 Expanded(
                   child: ListView.separated(
                     itemCount: _products.length,
                     separatorBuilder: (context, index) {
-                      return Divider();
+                      return const Divider();
                     },
                     itemBuilder: (context, index) {
                       return ListTile(
-                        contentPadding: EdgeInsets.all(8.0),
+                        contentPadding: const EdgeInsets.all(8.0),
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(_products[index].name,
-                                style: TextStyle(fontSize: 16)),
+                                style: const TextStyle(fontSize: 16)),
                             Text(
                               _products[index].description.length > 50
                                   ? _products[index].description.substring(0, 50) +
                                       '...'
                                   : _products[index].description,
-                              style: TextStyle(color: Colors.grey),
+                              style: const TextStyle(color: Colors.grey),
                             ),
                           ],
                         ),
@@ -203,6 +204,27 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                 ),
               ],
             ),
+            bottomNavigationBar: BottomNavBar(currentIndex: 0, 
+        onTap: (index){
+          switch(index){
+            case 0:
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => ProductsListScreen()));
+              break;
+            case 1:
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => CropsListScreen()));
+              break;
+            /*case 2:
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => OrdersScreen())
+              break;*/
+              /*case 3:
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => TransactionsScreen()));
+              break;*/
+          }
+        }),
     );
   }
 }
