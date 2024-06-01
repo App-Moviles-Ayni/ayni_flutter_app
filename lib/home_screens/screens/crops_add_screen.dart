@@ -13,7 +13,7 @@ class _CropsAddScreenState extends State<CropsAddScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Crops')), // Center the title
+        title: Center(child: Text('Crops')), 
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -25,55 +25,55 @@ class _CropsAddScreenState extends State<CropsAddScreen> {
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text('Add your crops'), // Add this line
+                  child: Text('Add your crop'), 
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextFormField(
-                  decoration: InputDecoration(labelText: 'Name', border: OutlineInputBorder()), // Add border
+                  decoration: InputDecoration(labelText: 'Name', border: OutlineInputBorder()), 
                   onSaved: (value) => name = value!,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextFormField(
-                  decoration: InputDecoration(labelText: 'Description', border: OutlineInputBorder()), // Add border
+                  decoration: InputDecoration(labelText: 'Description', border: OutlineInputBorder()), 
                   onSaved: (value) => description = value!,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextFormField(
-                  decoration: InputDecoration(labelText: 'Separation Distance', border: OutlineInputBorder()), // Add border
+                  decoration: InputDecoration(labelText: 'Separation Distance', border: OutlineInputBorder()), 
                   onSaved: (value) => separationDistance = value!,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextFormField(
-                  decoration: InputDecoration(labelText: 'Planting Depth', border: OutlineInputBorder()), // Add border
+                  decoration: InputDecoration(labelText: 'Planting Depth', border: OutlineInputBorder()), 
                   onSaved: (value) => plantingDepth = value!,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextFormField(
-                  decoration: InputDecoration(labelText: 'Weather', border: OutlineInputBorder()), // Add border
+                  decoration: InputDecoration(labelText: 'Weather', border: OutlineInputBorder()), 
                   onSaved: (value) => weather = value!,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextFormField(
-                  decoration: InputDecoration(labelText: 'Ground Type', border: OutlineInputBorder()), // Add border
+                  decoration: InputDecoration(labelText: 'Ground Type', border: OutlineInputBorder()), 
                   onSaved: (value) => groundType = value!,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextFormField(
-                  decoration: InputDecoration(labelText: 'Unit Price', border: OutlineInputBorder()), // Add border
+                  decoration: InputDecoration(labelText: 'Unit Price', border: OutlineInputBorder()), 
                   onSaved: (value) => unitPrice = value!,
                 ),
               ),
@@ -81,12 +81,11 @@ class _CropsAddScreenState extends State<CropsAddScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    // Aquí puedes manejar la lógica para guardar los datos del formulario
                   }
                 },
                 child: Text('Save'),
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Colors.green, // foreground
+                  foregroundColor: Colors.white, backgroundColor: Colors.green, 
                 ),
               ),
             ],
