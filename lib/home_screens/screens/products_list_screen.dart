@@ -83,69 +83,85 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                     children: [
                       Text('Latest Crops', style: TextStyle(fontSize: 24), textAlign: TextAlign.left),
                       GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CropsListScreen()),
-          );
-        },
-        child: Text('See All ->', style: TextStyle(color: Colors.red)),
-      ),
-                      ],
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => CropsListScreen()),
+                          );
+                        },
+                        child: Text('See All ->', style: TextStyle(color: Colors.red)),
                       ),
-                      ),
+                    ],
+                    
+                  ),
+                ),
                 Container(
-                  height: 250, // Aumenta la altura para hacer la imagen más larga
+                  height: 200,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: _products.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Column(
+                        child: Stack(
                           children: [
-                            Text(_products[index].name, style: TextStyle(fontSize: 16)), // Mueve el nombre del producto encima de la imagen
-                            //SizedBox(height: 9.0),
                             ClipRRect(
-                              //borderRadius: BorderRadius.circular(10.0),
-                              child: Image.network(_products[index].imageUrl, width: 100, height: 150), // Aumenta la altura de la imagen
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(_products[index].imageUrl, width: 100, height: 150, fit: BoxFit.cover),
+                            ),
+                            Positioned(
+                              top: 8.0,
+                              left: 8.0,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                child: Text(
+                                  _products[index].name,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
-                              ],
+                            ),
+                          ],
                         ),
                       );
                     },
                   ),
                 ),
-                Text('Products On Sale', style: TextStyle(fontSize: 24), textAlign: TextAlign.left),
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Text('Products On Sale', style: TextStyle(fontSize: 24), textAlign: TextAlign.left),
+                ),
                 Expanded(
                   child: ListView.separated(
                     itemCount: _products.length,
                     separatorBuilder: (context, index) {
-                      return Divider();  // Esto agrega una línea horizontal
-                      },
+                      return Divider();
+                    },
                     itemBuilder: (context, index) {
                       return ListTile(
                         contentPadding: EdgeInsets.all(8.0),
-                        leading: Column(
+                        title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                           children: [
+                          children: [
                             Text(_products[index].name, style: TextStyle(fontSize: 16)),
                             Text(
-                               _products[index].description.length > 50
-                               ? _products[index].description.substring(0, 50) + '...'
-                               : _products[index].description,
-                               style: TextStyle(color: Colors.grey),
-                               ),
-                               ],
-                               ),
-                               trailing: ClipOval(
-                                child: Image.network(_products[index].imageUrl, width: 50, height: 50),
-                                ),
-                                );
-                                },
-                                ),
-                                ),
-                                ],
+                              _products[index].description.length > 50
+                                  ? _products[index].description.substring(0, 50) + '...'
+                                  : _products[index].description,
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                        trailing: ClipOval(
+                          child: Image.network(_products[index].imageUrl, width: 50, height: 50, fit: BoxFit.cover),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
     );
   }
