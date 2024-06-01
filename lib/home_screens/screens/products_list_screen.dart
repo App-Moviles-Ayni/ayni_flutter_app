@@ -92,6 +92,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                         child: Text('See All ->', style: TextStyle(color: Colors.red)),
                       ),
                     ],
+                    
                   ),
                 ),
                 Container(

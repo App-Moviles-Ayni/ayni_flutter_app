@@ -35,7 +35,6 @@ class _CropsListScreenState extends State<CropsListScreen> {
           TextButton(
             child: Text('Filter'),
             onPressed: () {
-              // Acción del botón de filtro
             },
           ),
         ],
@@ -76,18 +75,18 @@ class _CropsListScreenState extends State<CropsListScreen> {
                         borderRadius: BorderRadius.circular(10.0),
                         child: Image.network(
                           _products[index].imageUrl,
-                          width: 150, // Ajusta el ancho de la imagen
-                          height: 150, // Ajusta la altura de la imagen
+                          width: 150,
+                          height: 150,
                           fit: BoxFit.cover,
                         ),
                       ),
-                      SizedBox(height: 9.0), // Espacio entre la imagen y el texto
+                      SizedBox(height: 9.0), 
                       Text(
                         _products[index].name,
                         style: TextStyle(
                           fontSize: 16,
                         ),
-                      ), // Nombre del producto debajo de la imagen
+                      ), 
                     ],
                   ),
                 );
@@ -96,7 +95,7 @@ class _CropsListScreenState extends State<CropsListScreen> {
           ),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start, // Alinea el texto a la izquierda
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -107,26 +106,25 @@ class _CropsListScreenState extends State<CropsListScreen> {
                     padding: const EdgeInsets.all(8.0),
                     itemCount: _products.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3, // Número de elementos en el eje transversal (horizontal)
-                      crossAxisSpacing: 10, // Espacio entre elementos en el eje transversal
-                      mainAxisSpacing: 10, // Espacio entre elementos en el eje principal (vertical)
-                      childAspectRatio: 0.6, // Ajusta este valor según la relación de aspecto deseada
+                      crossAxisCount: 3, 
+                      crossAxisSpacing: 10, 
+                      mainAxisSpacing: 10, 
+                      childAspectRatio: 0.6,
                     ),
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0), // Opcional: Añade bordes redondeados
+                            borderRadius: BorderRadius.circular(8.0),
                             child: Image.network(
                               _products[index].imageUrl,
                               width: double.infinity,
-                              height: 150, // Ajusta la altura de la imagen
-                              fit: BoxFit.cover, // Ajusta la imagen para cubrir todo el espacio
+                              height: 150, 
+                              fit: BoxFit.cover, 
                             ),
                           ),
-                          SizedBox(height: 9.0), // Espacio entre la imagen y el texto
-                          Text(_products[index].name, style: TextStyle(fontSize: 16)), // Nombre del producto
-                          //Text('${_products[index].weight}kg \$${_products[index].price} per kg'), // Peso y precio del producto
+                          SizedBox(height: 9.0), 
+                          Text(_products[index].name, style: TextStyle(fontSize: 16)),                        
                         ],
                       );
                     },
