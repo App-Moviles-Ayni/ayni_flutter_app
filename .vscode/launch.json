@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "ayni_flutter_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "ayni_flutter_app (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "ayni_flutter_app (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "Flutter (Pixel_3a_API_34_extension_level_7_x86_64)",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "emulator-5554"
+        }
+    ]
+}
