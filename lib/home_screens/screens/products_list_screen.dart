@@ -1,5 +1,7 @@
-import 'package:ayni_flutter_app/home_screens/screens/crops_list_screen.dart';
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:ayni_flutter_app/home_screens/screens/crops_list_screen.dart';
 import 'package:ayni_flutter_app/home_screens/services/products_service.dart';
 import 'package:ayni_flutter_app/home_screens/models/products.dart';
 
@@ -11,12 +13,27 @@ class ProductsListScreen extends StatefulWidget {
 class _ProductsListScreenState extends State<ProductsListScreen> {
   final ProductsService _productsService = ProductsService();
   List<Products> _products = [];
+  List<Products> _shuffledProducts = [];
   bool _isLoading = true;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     _fetchProducts();
+    _startShuffleTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startShuffleTimer() {
+    _timer = Timer.periodic(Duration(seconds: 10), (Timer timer) {
+      _shuffleProducts();
+    });
   }
 
   Future<void> _fetchProducts() async {
@@ -27,17 +44,24 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
     });
   }
 
+  void _shuffleProducts() {
+    setState(() {
+      _shuffledProducts = List.of(_products);
+      _shuffledProducts.shuffle(Random());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.menu), 
+          icon: Icon(Icons.menu),
           onPressed: () {},
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications), 
+            icon: Icon(Icons.notifications),
             onPressed: () {},
           ),
         ],
@@ -49,7 +73,11 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text('Welcome, Jose.', style: TextStyle(fontSize: 35), textAlign: TextAlign.left),
+                  child: Text(
+                    'Welcome, Jose.',
+                    style: TextStyle(fontSize: 35),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -61,7 +89,9 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                     ),
                     child: Column(
                       children: [
-                        Text('Find your product', style: TextStyle(fontSize: 20, color: Colors.white)),
+                        Text('Find your product',
+                            style:
+                                TextStyle(fontSize: 20, color: Colors.white)),
                         TextField(
                           decoration: InputDecoration(
                             fillColor: Colors.white,
@@ -81,25 +111,26 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Latest Crops', style: TextStyle(fontSize: 24), textAlign: TextAlign.left),
+                      Text('Latest Crops', style: TextStyle(fontSize: 24)),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => CropsListScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => CropsListScreen()),
                           );
                         },
-                        child: Text('See All ->', style: TextStyle(color: Colors.red)),
+                        child: Text('See All ->',
+                            style: TextStyle(color: Colors.red)),
                       ),
                     ],
-                    
                   ),
                 ),
                 Container(
                   height: 200,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: _products.length,
+                    itemCount: _shuffledProducts.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -107,15 +138,20 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
-                              child: Image.network(_products[index].imageUrl, width: 100, height: 150, fit: BoxFit.cover),
+                              child: Image.network(
+                                  _shuffledProducts[index].imageUrl,
+                                  width: 100,
+                                  height: 150,
+                                  fit: BoxFit.cover),
                             ),
                             Positioned(
                               top: 8.0,
                               left: 8.0,
                               child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 4.0),
                                 child: Text(
-                                  _products[index].name,
+                                  _shuffledProducts[index].name,
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,
@@ -131,7 +167,8 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(5.0),
-                  child: Text('Products On Sale', style: TextStyle(fontSize: 24), textAlign: TextAlign.left),
+                  child:
+                      Text('Products On Sale', style: TextStyle(fontSize: 24)),
                 ),
                 Expanded(
                   child: ListView.separated(
@@ -145,17 +182,20 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(_products[index].name, style: TextStyle(fontSize: 16)),
+                            Text(_products[index].name,
+                                style: TextStyle(fontSize: 16)),
                             Text(
                               _products[index].description.length > 50
-                                  ? _products[index].description.substring(0, 50) + '...'
+                                  ? _products[index].description.substring(0, 50) +
+                                      '...'
                                   : _products[index].description,
                               style: TextStyle(color: Colors.grey),
                             ),
                           ],
                         ),
                         trailing: ClipOval(
-                          child: Image.network(_products[index].imageUrl, width: 50, height: 50, fit: BoxFit.cover),
+                          child: Image.network(_products[index].imageUrl,
+                              width: 50, height: 50, fit: BoxFit.cover),
                         ),
                       );
                     },

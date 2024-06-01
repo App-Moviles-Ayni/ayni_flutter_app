@@ -1,7 +1,9 @@
+import 'dart:async';
+import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:ayni_flutter_app/home_screens/models/products.dart';
 import 'package:ayni_flutter_app/home_screens/screens/crops_add_screen.dart';
 import 'package:ayni_flutter_app/home_screens/services/products_service.dart';
-import 'package:flutter/material.dart';
 
 class CropsListScreen extends StatefulWidget {
   @override
@@ -11,12 +13,27 @@ class CropsListScreen extends StatefulWidget {
 class _CropsListScreenState extends State<CropsListScreen> {
   final ProductsService _productsService = ProductsService();
   List<Products> _products = [];
+  List<Products> _shuffledProducts = [];
   bool _isLoading = true;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     _fetchProducts();
+    _startShuffleTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startShuffleTimer() {
+    _timer = Timer.periodic(Duration(seconds: 10), (Timer timer) {
+      _shuffleProducts();
+    });
   }
 
   Future<void> _fetchProducts() async {
@@ -24,6 +41,13 @@ class _CropsListScreenState extends State<CropsListScreen> {
     setState(() {
       _products = products;
       _isLoading = false;
+    });
+  }
+
+  void _shuffleProducts() {
+    setState(() {
+      _shuffledProducts = List.of(_products);
+      _shuffledProducts.shuffle(Random());
     });
   }
 
@@ -35,8 +59,7 @@ class _CropsListScreenState extends State<CropsListScreen> {
         actions: <Widget>[
           TextButton(
             child: Text('Filter'),
-            onPressed: () {
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -64,35 +87,37 @@ class _CropsListScreenState extends State<CropsListScreen> {
           ),
           Container(
             height: 200,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _products.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.network(
-                          _products[index].imageUrl,
-                          width: 150,
-                          height: 150,
-                          fit: BoxFit.cover,
+            child: _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _shuffledProducts.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(
+                                _shuffledProducts[index].imageUrl,
+                                width: 150,
+                                height: 150,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(height: 9.0),
+                            Text(
+                              _shuffledProducts[index].name,
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      SizedBox(height: 9.0), 
-                      Text(
-                        _products[index].name,
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ), 
-                    ],
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
           Expanded(
             child: Column(
@@ -107,9 +132,9 @@ class _CropsListScreenState extends State<CropsListScreen> {
                     padding: const EdgeInsets.all(8.0),
                     itemCount: _products.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3, 
-                      crossAxisSpacing: 10, 
-                      mainAxisSpacing: 10, 
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
                       childAspectRatio: 0.6,
                     ),
                     itemBuilder: (context, index) {
@@ -120,12 +145,13 @@ class _CropsListScreenState extends State<CropsListScreen> {
                             child: Image.network(
                               _products[index].imageUrl,
                               width: double.infinity,
-                              height: 150, 
-                              fit: BoxFit.cover, 
+                              height: 150,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          SizedBox(height: 9.0), 
-                          Text(_products[index].name, style: TextStyle(fontSize: 16)),                  
+                          SizedBox(height: 9.0),
+                          Text(_products[index].name,
+                              style: TextStyle(fontSize: 16)),
                         ],
                       );
                     },
@@ -137,15 +163,16 @@ class _CropsListScreenState extends State<CropsListScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CropsAddScreen()),
-        );
-      },
-      child: Icon(Icons.add, color: Colors.white),
-      backgroundColor: Colors.green,
-    ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CropsAddScreen()),
+          );
+        },
+        child: Icon(Icons.add, color: Colors.white),
+        backgroundColor: Colors.green,
+      ),
     );
   }
 }
+
