@@ -1,6 +1,10 @@
+import 'package:ayni_flutter_app/finance_screens/screens/transaction_panels.dart';
+import 'package:ayni_flutter_app/home_screens/screens/crops_list_screen.dart';
+import 'package:ayni_flutter_app/home_screens/screens/products_list_screen.dart';
 import 'package:ayni_flutter_app/models/orders.dart';
 import 'package:ayni_flutter_app/screens/create_order_form_screen.dart';
 import 'package:ayni_flutter_app/services/orders_service.dart';
+import 'package:ayni_flutter_app/shared/widgets/bottom_navigation_bar.dart';
 import 'package:ayni_flutter_app/widgets/confirmation_dialog.dart';
 import 'package:ayni_flutter_app/widgets/custom_search_bar.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +36,6 @@ class _SalesListScreenState extends State<SalesListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {},
-        ),
         title: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,6 +67,27 @@ class _SalesListScreenState extends State<SalesListScreen> {
         tooltip: 'Add Order',
         child: const Icon(Icons.add),
       ),
+      bottomNavigationBar: BottomNavBar(currentIndex: 0, 
+        onTap: (index){
+          switch(index){
+            case 0:
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => ProductsListScreen()));
+              break;
+            case 1:
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => CropsListScreen()));
+              break;
+            case 2:
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => SalesListScreen()));
+              break;
+            case 3:
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => TransactionListScreen2()));
+              break;
+          }
+        }),
     );
   }
 }

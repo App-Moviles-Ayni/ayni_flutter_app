@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:ayni_flutter_app/feature_crops/screens/crop_details_screen.dart';
+import 'package:ayni_flutter_app/finance_screens/screens/transaction_panels.dart';
 import 'package:ayni_flutter_app/home_screens/screens/products_list_screen.dart';
+import 'package:ayni_flutter_app/screens/sales_list_screen.dart';
 import 'package:ayni_flutter_app/shared/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:ayni_flutter_app/home_screens/models/products.dart';
@@ -206,14 +208,14 @@ class _CropsListScreenState extends State<CropsListScreen> {
               Navigator.push(context, MaterialPageRoute(
                 builder: (context) => CropsListScreen()));
               break;
-            /*case 2:
+            case 2:
               Navigator.push(context, MaterialPageRoute(
-                builder: (context) => OrdersScreen())
-              break;*/
-              /*case 3:
+                builder: (context) => SalesListScreen()));
+              break;
+            case 3:
               Navigator.push(context, MaterialPageRoute(
-                builder: (context) => TransactionsScreen()));
-              break;*/
+                builder: (context) => TransactionListScreen2()));
+              break;
           }
         }),
     );

@@ -12,14 +12,9 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: TransactionListScreen2(),*/
-    /*return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SalesListScreen(),*/
     return MaterialApp(
-      title: 'Tu Aplicación',
+      debugShowCheckedModeBanner: false,
+      title: 'Ayni App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

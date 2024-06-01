@@ -1,3 +1,7 @@
+import 'package:ayni_flutter_app/home_screens/screens/crops_list_screen.dart';
+import 'package:ayni_flutter_app/home_screens/screens/products_list_screen.dart';
+import 'package:ayni_flutter_app/screens/sales_list_screen.dart';
+import 'package:ayni_flutter_app/shared/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:ayni_flutter_app/finance_screens/models/transaction.dart';
 import 'package:ayni_flutter_app/finance_screens/screens/transaction_form.dart';
@@ -66,12 +70,6 @@ class _TransactionListScreenState extends State<TransactionListScreen2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            // Aquí puedes añadir la navegación hacia atrás cuando tengas la pantalla de inicio implementada
-          },
-        ),
         title: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -162,6 +160,27 @@ class _TransactionListScreenState extends State<TransactionListScreen2> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      bottomNavigationBar: BottomNavBar(currentIndex: 0, 
+        onTap: (index){
+          switch(index){
+            case 0:
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => ProductsListScreen()));
+              break;
+            case 1:
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => CropsListScreen()));
+              break;
+            case 2:
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => SalesListScreen()));
+              break;
+            case 3:
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => TransactionListScreen2()));
+              break;
+          }
+        }),
     );
   }
 
