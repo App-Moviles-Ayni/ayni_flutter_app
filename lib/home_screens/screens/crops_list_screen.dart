@@ -27,52 +27,69 @@ class _CropsListScreenState extends State<CropsListScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(child: Text('Crops')), // Centrar el título
-        actions: <Widget>[
-          TextButton(
-            child: Text('Filter'), // Reemplazar el ícono de filtro con la palabra 'Filter'
-            onPressed: () {
-              // Implementar la funcionalidad de filtro
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: "Search",
-                hintText: "Search",
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                ),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Center(child: Text('Crops')),
+      actions: <Widget>[
+        TextButton(
+          child: Text('Filter'),
+          onPressed: () {
+            // Implementar la funcionalidad de filtro
+          },
+        ),
+      ],
+    ),
+    body: Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            decoration: InputDecoration(
+              labelText: "Search",
+              hintText: "Search",
+              prefixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
               ),
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _products.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Image.network(_products[index].imageUrl), // Asegúrate de tener una URL válida para la imagen
-                  title: Text(_products[index].name),
-                  //subtitle: Text('\$${_products[index].price} per kg'),
-                  trailing: Icon(Icons.arrow_forward),
-                  onTap: () {
-                    // Implementar la funcionalidad de navegación a la página de detalles del producto
-                  },
-                );
-              },
+        ),
+        Expanded(
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // Número de columnas
+              childAspectRatio: 3 / 2, // Relación de aspecto de los elementos de la cuadrícula
             ),
+            itemCount: _products.length,
+            itemBuilder: (context, index) {
+              return Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    AspectRatio(
+                      aspectRatio: 18 / 11,
+                      child: Image.network(_products[index].imageUrl, fit: BoxFit.fitWidth),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(_products[index].name),
+                          SizedBox(height: 8.0),
+                          //Text('\$${_products[index].price} per kg'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 }
