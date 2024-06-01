@@ -1,4 +1,5 @@
 import 'package:ayni_flutter_app/home_screens/models/products.dart';
+import 'package:ayni_flutter_app/home_screens/screens/crops_add_screen.dart';
 import 'package:ayni_flutter_app/home_screens/services/products_service.dart';
 import 'package:flutter/material.dart';
 
@@ -124,7 +125,7 @@ class _CropsListScreenState extends State<CropsListScreen> {
                             ),
                           ),
                           SizedBox(height: 9.0), 
-                          Text(_products[index].name, style: TextStyle(fontSize: 16)),                        
+                          Text(_products[index].name, style: TextStyle(fontSize: 16)),                  
                         ],
                       );
                     },
@@ -135,6 +136,16 @@ class _CropsListScreenState extends State<CropsListScreen> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CropsAddScreen()),
+        );
+      },
+      child: Icon(Icons.add, color: Colors.white),
+      backgroundColor: Colors.green,
+    ),
     );
   }
 }
