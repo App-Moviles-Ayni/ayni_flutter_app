@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'login/screens/splash_screen.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return MaterialApp(
+      title: 'Ayni',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
       ),
+      home: SplashScreen(),
     );
   }
 }
