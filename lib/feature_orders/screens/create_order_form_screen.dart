@@ -1,9 +1,6 @@
-import 'package:ayni_flutter_app/models/orders.dart';
-import 'package:ayni_flutter_app/models/sales.dart';
-import 'package:ayni_flutter_app/models/sales_response.dart';
-import 'package:ayni_flutter_app/services/orders_service.dart';
-import 'package:ayni_flutter_app/services/sales_service.dart';
-import 'package:ayni_flutter_app/widgets/custom_text_form_field.dart';
+import 'package:ayni_flutter_app/feature_orders/models/sales.dart';
+import 'package:ayni_flutter_app/feature_orders/services/sales_service.dart';
+import 'package:ayni_flutter_app/feature_orders/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 
 class CreateOrderFormScreen extends StatefulWidget {
@@ -16,7 +13,7 @@ class CreateOrderFormScreen extends StatefulWidget {
 class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final SalesService _salesService = SalesService();
-  final OrdersService _ordersService = OrdersService();
+  //final OrdersService _ordersService = OrdersService();
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -123,7 +120,6 @@ class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
                   if (_formKey.currentState!.validate()) {
                     final unitPrice = double.parse(_unitPriceController.text);
                     final quantity = int.parse(_quantityController.text);
-
                     final newSale = Sales(
                         name: _nameController.text,
                         description: _descriptionController.text,
@@ -131,10 +127,8 @@ class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
                         quantity: quantity,
                         imageUrl: _imageUrlController.text,
                         userId: _userId);
-
-                    SalesResponse saleResponse =
-                        await _salesService.post(newSale);
-
+                    await _salesService.post(newSale);
+                    /*
                     if (saleResponse.id != null) {
                       final newOrder = Orders(
                           description: _descriptionController.text,
@@ -149,7 +143,7 @@ class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
 
                       await _ordersService.post(newOrder);
                     }
-
+                    */
                     Navigator.pop(context, true);
                   }
                 },

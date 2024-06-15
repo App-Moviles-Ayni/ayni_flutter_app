@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:ayni_flutter_app/models/orders.dart';
+import 'package:ayni_flutter_app/feature_orders/models/orders.dart';
 import 'package:http/http.dart' as http;
 
 class OrdersService {

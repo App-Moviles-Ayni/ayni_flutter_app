@@ -1,12 +1,16 @@
+import 'dart:async';
+
+import 'package:ayni_flutter_app/feature_orders/models/sales.dart';
+import 'package:ayni_flutter_app/feature_orders/services/sales_service.dart';
 import 'package:ayni_flutter_app/finance_screens/screens/transaction_panels.dart';
 import 'package:ayni_flutter_app/home_screens/screens/crops_list_screen.dart';
 import 'package:ayni_flutter_app/home_screens/screens/products_list_screen.dart';
-import 'package:ayni_flutter_app/models/orders.dart';
-import 'package:ayni_flutter_app/screens/create_order_form_screen.dart';
-import 'package:ayni_flutter_app/services/orders_service.dart';
+import 'package:ayni_flutter_app/feature_orders/models/orders.dart';
+import 'package:ayni_flutter_app/feature_orders/screens/create_order_form_screen.dart';
+import 'package:ayni_flutter_app/feature_orders/services/orders_service.dart';
 import 'package:ayni_flutter_app/shared/widgets/bottom_navigation_bar.dart';
-import 'package:ayni_flutter_app/widgets/confirmation_dialog.dart';
-import 'package:ayni_flutter_app/widgets/custom_search_bar.dart';
+import 'package:ayni_flutter_app/feature_orders/widgets/confirmation_dialog.dart';
+import 'package:ayni_flutter_app/feature_orders/widgets/custom_search_bar.dart';
 import 'package:flutter/material.dart';
 
 class SalesListScreen extends StatefulWidget {
@@ -159,6 +163,26 @@ class SalesItem extends StatefulWidget {
 }
 
 class _SalesItemState extends State<SalesItem> {
+  final SalesService _salesService = SalesService();
+  Sales _sale = Sales(
+    name: "",
+    description: "",
+    unitPrice: 0.0,
+    quantity: 0,
+    imageUrl: "",
+    userId: 0
+  );
+
+  void fetchImage() async {
+    final saleId = widget.order.saleId.toString();
+    _sale = await _salesService.getSaleById(saleId);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchImage();
+  }
 
   @override
   Widget build(BuildContext context) {

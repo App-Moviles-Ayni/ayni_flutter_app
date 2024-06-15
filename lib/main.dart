@@ -1,10 +1,8 @@
-import 'package:ayni_flutter_app/finance_screens/screens/transaction_panels.dart';
-import 'package:ayni_flutter_app/screens/sales_list_screen.dart';
 import 'package:ayni_flutter_app/home_screens/screens/products_list_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MainApp());
+  runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {

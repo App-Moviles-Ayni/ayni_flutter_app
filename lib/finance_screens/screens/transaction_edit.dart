@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ayni_flutter_app/finance_screens/models/transaction.dart';
-import 'package:ayni_flutter_app/finance_screens/screens/transaction_form.dart';
-import 'package:ayni_flutter_app/finance_screens/services/transaction_service.dart';
 
 
 class EditTransactionScreen extends StatefulWidget {
