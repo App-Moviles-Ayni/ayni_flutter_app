@@ -114,7 +114,8 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Latest Crops', style: TextStyle(fontSize: 24)),
+                      const Text('Latest Crops',
+                          style: TextStyle(fontSize: 24)),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -171,7 +172,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                 const Padding(
                   padding: EdgeInsets.all(5.0),
                   child:
-                    Text('Products On Sale', style: TextStyle(fontSize: 24)),
+                      Text('Products On Sale', style: TextStyle(fontSize: 24)),
                 ),
                 Expanded(
                   child: ListView.separated(
@@ -189,7 +190,9 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                                 style: const TextStyle(fontSize: 16)),
                             Text(
                               _products[index].description.length > 50
-                                  ? _products[index].description.substring(0, 50) +
+                                  ? _products[index]
+                                          .description
+                                          .substring(0, 50) +
                                       '...'
                                   : _products[index].description,
                               style: const TextStyle(color: Colors.grey),
@@ -206,27 +209,41 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                 ),
               ],
             ),
-            bottomNavigationBar: BottomNavBar(currentIndex: 0, 
-        onTap: (index){
-          switch(index){
-            case 0:
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => ProductsListScreen()));
-              break;
-            case 1:
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => CropsListScreen()));
-              break;
-            case 2:
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => SalesListScreen()));
-              break;
-            case 3:
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => TransactionListScreen2()));
-              break;
-          }
-        }),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            height: 1.0, // Altura de la línea negra
+            color: Colors.white, // Color de la línea negra
+          ),
+          BottomNavBar(
+              currentIndex: 0,
+              onTap: (index) {
+                switch (index) {
+                  case 0:
+                    Navigator.push(context,
+                        SlideTransitionPageRoute(page: ProductsListScreen()));
+                    break;
+                  case 1:
+                    Navigator.push(context,
+                        SlideTransitionPageRoute(page: CropsListScreen()));
+                    break;
+                  case 2:
+                    Navigator.push(
+                        context,
+                        SlideTransitionPageRoute(
+                            page: const SalesListScreen()));
+                    break;
+                  case 3:
+                    Navigator.push(
+                        context,
+                        SlideTransitionPageRoute(
+                            page: TransactionListScreen2()));
+                    break;
+                }
+              }),
+        ],
+      ),
     );
   }
 }

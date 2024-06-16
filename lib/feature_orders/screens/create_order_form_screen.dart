@@ -41,6 +41,8 @@ class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
             SizedBox(height: 8),
           ],
         ),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
         centerTitle: true,
       ),
       body: Padding(
@@ -59,7 +61,9 @@ class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 10.0,),
+              const SizedBox(
+                height: 10.0,
+              ),
               CustomTextFormField(
                 controller: _descriptionController,
                 labelText: 'Description',
@@ -71,7 +75,9 @@ class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 10.0,),
+              const SizedBox(
+                height: 10.0,
+              ),
               CustomTextFormField(
                 controller: _unitPriceController,
                 labelText: 'Unit Price',
@@ -86,7 +92,9 @@ class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 10.0,),
+              const SizedBox(
+                height: 10.0,
+              ),
               CustomTextFormField(
                 controller: _quantityController,
                 labelText: 'Quantity',
@@ -101,7 +109,9 @@ class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 10.0,),
+              const SizedBox(
+                height: 10.0,
+              ),
               CustomTextFormField(
                 controller: _imageUrlController,
                 labelText: 'Image Link',
@@ -113,22 +123,28 @@ class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 10.0,),
+              const SizedBox(
+                height: 10.0,
+              ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    final unitPrice = double.parse(_unitPriceController.text);
-                    final quantity = int.parse(_quantityController.text);
-                    final newSale = Sales(
-                        name: _nameController.text,
-                        description: _descriptionController.text,
-                        unitPrice: unitPrice,
-                        quantity: quantity,
-                        imageUrl: _imageUrlController.text,
-                        userId: _userId);
-                    await _salesService.post(newSale);
-                    /*
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          final unitPrice =
+                              double.parse(_unitPriceController.text);
+                          final quantity = int.parse(_quantityController.text);
+                          final newSale = Sales(
+                              name: _nameController.text,
+                              description: _descriptionController.text,
+                              unitPrice: unitPrice,
+                              quantity: quantity,
+                              imageUrl: _imageUrlController.text,
+                              userId: _userId);
+                          await _salesService.post(newSale);
+                          /*
                     if (saleResponse.id != null) {
                       final newOrder = Orders(
                           description: _descriptionController.text,
@@ -144,15 +160,20 @@ class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
                       await _ordersService.post(newOrder);
                     }
                     */
-                    Navigator.pop(context, true);
-                  }
-                },
-                style: ButtonStyle(
-                  foregroundColor: WidgetStateProperty.all<Color>(Colors.black),
-                  backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
-                ),
-                child: const Text('Finish'),
-              ),
+                          Navigator.pop(context, true);
+                        }
+                      },
+                      style: ButtonStyle(
+                        foregroundColor:
+                            WidgetStateProperty.all<Color>(Colors.black),
+                        backgroundColor:
+                            WidgetStateProperty.all<Color>(Colors.green),
+                      ),
+                      child: const Text('Finish'),
+                    ),
+                  )
+                ],
+              )
             ]),
           )),
     );

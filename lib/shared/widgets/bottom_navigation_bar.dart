@@ -14,6 +14,7 @@ class BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      backgroundColor: Colors.green,
       type: BottomNavigationBarType.fixed,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
@@ -34,8 +35,22 @@ class BottomNavBarState extends State<BottomNavBar> {
         ),
       ],
       currentIndex: widget.currentIndex,
-      selectedItemColor: Colors.blue,
+      selectedItemColor: Colors.white,
       onTap: widget.onTap,
     );
   }
+}
+
+class SlideTransitionPageRoute extends PageRouteBuilder {
+  final Widget page;
+
+  SlideTransitionPageRoute({required this.page}): super(
+          pageBuilder: (context, animation, secondaryAnimation) => page,
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+        );
 }

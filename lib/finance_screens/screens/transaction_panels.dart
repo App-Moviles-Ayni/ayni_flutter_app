@@ -160,24 +160,20 @@ class _TransactionListScreenState extends State<TransactionListScreen2> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      bottomNavigationBar: BottomNavBar(currentIndex: 0, 
+      bottomNavigationBar: BottomNavBar(currentIndex: 3, 
         onTap: (index){
           switch(index){
             case 0:
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => ProductsListScreen()));
+              Navigator.push(context, SlideTransitionPageRoute(page: ProductsListScreen()));
               break;
             case 1:
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => CropsListScreen()));
+              Navigator.push(context, SlideTransitionPageRoute(page: CropsListScreen()));
               break;
             case 2:
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => SalesListScreen()));
+              Navigator.push(context, SlideTransitionPageRoute(page: const SalesListScreen()));
               break;
             case 3:
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => TransactionListScreen2()));
+              Navigator.push(context, SlideTransitionPageRoute(page: TransactionListScreen2()));
               break;
           }
         }),

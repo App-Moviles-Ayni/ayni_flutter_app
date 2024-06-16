@@ -10,15 +10,16 @@ class CustomSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: TextField(
         onChanged: onQueryChanged,
         decoration: const InputDecoration(
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8))),
-            hintText: "Search order by name",
-            prefixIcon: Icon(Icons.search)),
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            hintText: "Search",
+            labelText: "Search",
+            suffixIcon: Icon(Icons.search)),
       ),
     );
   }

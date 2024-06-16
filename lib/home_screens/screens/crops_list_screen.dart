@@ -90,7 +90,7 @@ class _CropsListScreenState extends State<CropsListScreen> {
               child: Text('Hot Deals', style: TextStyle(fontSize: 24)),
             ),
           ),
-          Container(
+          SizedBox(
             height: 200,
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
@@ -197,27 +197,33 @@ class _CropsListScreenState extends State<CropsListScreen> {
         backgroundColor: Colors.green,
         child: const Icon(Icons.add, color: Colors.white),
       ),
-      bottomNavigationBar: BottomNavBar(currentIndex: 0, 
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            height: 1.0, // Altura de la línea negra
+            color: Colors.white, // Color de la línea negra
+          ),
+BottomNavBar(currentIndex: 1, 
         onTap: (index){
           switch(index){
             case 0:
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => ProductsListScreen()));
+              Navigator.push(context, SlideTransitionPageRoute(page: ProductsListScreen()));
               break;
             case 1:
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => CropsListScreen()));
+              Navigator.push(context, SlideTransitionPageRoute(page: CropsListScreen()));
               break;
             case 2:
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => SalesListScreen()));
+              Navigator.push(context, SlideTransitionPageRoute(page: const SalesListScreen()));
               break;
             case 3:
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => TransactionListScreen2()));
+              Navigator.push(context, SlideTransitionPageRoute(page: TransactionListScreen2()));
               break;
           }
         }),
+        ]
+      )
+      
     );
   }
 }

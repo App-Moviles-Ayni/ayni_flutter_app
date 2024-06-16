@@ -13,6 +13,8 @@ class _CropsAddScreenState extends State<CropsAddScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
         title: const Center(child: Text('Crops')), 
       ),
       body: Padding(
