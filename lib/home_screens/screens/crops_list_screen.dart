@@ -83,7 +83,7 @@ class _CropsListScreenState extends State<CropsListScreen> {
               ),
             ),
           ),
-          const Align(
+          /*const Align(
             alignment: Alignment.centerLeft,
             child: Padding(
               padding: EdgeInsets.all(8.0),
@@ -133,7 +133,7 @@ class _CropsListScreenState extends State<CropsListScreen> {
                       );
                     },
                   ),
-          ),
+          ),*/
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

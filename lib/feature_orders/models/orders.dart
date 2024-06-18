@@ -4,7 +4,7 @@ class Orders {
         required this.description,
         required this.totalPrice,
         required this.quantity,
-        required this.imageUrl,
+        required this.paymentMethod,
         required this.saleId,
         required this.orderedBy,
         required this.acceptedBy,
@@ -15,7 +15,7 @@ class Orders {
     final String? description;
     final double? totalPrice;
     final int? quantity;
-    final String? imageUrl;
+    final String? paymentMethod;
     final int? saleId;
     final int? orderedBy;
     final int? acceptedBy;
@@ -28,7 +28,7 @@ class Orders {
             description: json["description"],
             totalPrice: json["totalPrice"],
             quantity: json["quantity"],
-            imageUrl: json["paymentMethod"],
+            paymentMethod: json["paymentMethod"],
             saleId: json["saleId"],
             orderedBy: json["orderedBy"],
             acceptedBy: json["acceptedBy"],
@@ -41,7 +41,7 @@ class Orders {
         "description": description,
         "totalPrice": totalPrice,
         "quantity": quantity,
-        "paymentMethod": imageUrl,
+        "paymentMethod": paymentMethod,
         "saleId": saleId,
         "orderedBy": orderedBy,
         "acceptedBy": acceptedBy,
@@ -51,6 +51,6 @@ class Orders {
 
     @override
     String toString(){
-        return "$description, $totalPrice, $quantity, $imageUrl, $saleId, $orderedBy, $acceptedBy, $orderedDate, $status, ";
+        return "$description, $totalPrice, $quantity, $paymentMethod, $saleId, $orderedBy, $acceptedBy, $orderedDate, $status, ";
     }
 }

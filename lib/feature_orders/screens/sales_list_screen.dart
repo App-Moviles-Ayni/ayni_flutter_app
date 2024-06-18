@@ -161,24 +161,25 @@ class SalesItem extends StatefulWidget {
 
 class _SalesItemState extends State<SalesItem> {
   final SalesService _salesService = SalesService();
-  Sales _sale = Sales(
-    name: "",
-    description: "",
-    unitPrice: 0.0,
-    quantity: 0,
-    imageUrl: "",
-    userId: 0
-  );
-
-  void fetchImage() async {
-    final saleId = widget.order.saleId.toString();
-    _sale = await _salesService.getSaleById(saleId);
+  Sales? _sale;
+  
+  void fetchSale() async{
+    try {
+      if (widget.order.saleId != null) {
+        _sale = await _salesService.getSaleById(widget.order.saleId.toString());
+        setState(() {
+          _sale = _sale;
+        });
+      }
+    } catch (e) {
+      print("Error fetching sale: $e");
+    }
   }
 
   @override
   void initState() {
+    fetchSale();
     super.initState();
-    fetchImage();
   }
 
   @override
@@ -201,8 +202,12 @@ class _SalesItemState extends State<SalesItem> {
       child: ListTile(
         leading: SizedBox(
           width: 60,
-          child: Image.network(widget.order.imageUrl.toString(),
-              fit: BoxFit.cover),
+          child: _sale != null && _sale!.imageUrl != null
+              ? Image.network(
+                  _sale!.imageUrl.toString(),
+                  fit: BoxFit.cover,
+                )
+              : const Placeholder(),
         ),
         title: Text(
           widget.order.description.toString(),

@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(title: Text('Create a farmer account')),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -37,8 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(controller: _usernameController, decoration: InputDecoration(labelText: 'Username')),
             TextField(controller: _passwordController, decoration: InputDecoration(labelText: 'Password'), obscureText: true),
             SizedBox(height: 20),
-            ElevatedButton(onPressed: _login, child: Text('Login')),
-          ],
+            ElevatedButton(onPressed: _login, child: Text('Login'), style: ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.green), foregroundColor: WidgetStateProperty.all(Colors.black),
+        ))],
         ),
       ),
     );
