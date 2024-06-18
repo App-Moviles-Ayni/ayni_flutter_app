@@ -1,4 +1,5 @@
 import 'package:ayni_flutter_app/feature_iam/services/iam_service.dart';
+import 'package:ayni_flutter_app/home_screens/screens/products_list_screen.dart';
 import 'package:flutter/material.dart';
 
 
@@ -22,6 +23,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _passwordController.text,
     );
     if (response.statusCode == 200) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ProductsListScreen()),
+      );
       // Registro exitoso
     } else {
       // Error en el registro

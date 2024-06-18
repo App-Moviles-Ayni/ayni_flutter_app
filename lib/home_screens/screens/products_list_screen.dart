@@ -58,16 +58,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {},
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () {},
-          ),
-        ],
+        
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -77,7 +68,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                 const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(
-                    'Welcome, Jose.',
+                    'Welcome.',
                     style: TextStyle(fontSize: 35),
                     textAlign: TextAlign.left,
                   ),

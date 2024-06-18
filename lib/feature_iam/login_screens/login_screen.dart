@@ -1,4 +1,5 @@
 import 'package:ayni_flutter_app/feature_iam/services/iam_service.dart';
+import 'package:ayni_flutter_app/home_screens/screens/products_list_screen.dart';
 import 'package:flutter/material.dart';
 
 
@@ -20,9 +21,17 @@ class _LoginScreenState extends State<LoginScreen> {
     if (response.statusCode == 200) {
       // Inicio de sesión exitoso
       print('Inicio de sesión exitoso: ${response.body}');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ProductsListScreen()),
+      );
     } else {
       // Error en el inicio de sesión
       print('Error en el inicio de sesión: ${response.body}');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ProductsListScreen()),
+      );
     }
   }
 

@@ -61,12 +61,6 @@ class _CropsListScreenState extends State<CropsListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Crops')),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Filter'),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Column(
         children: <Widget>[
