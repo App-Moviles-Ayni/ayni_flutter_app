@@ -7,20 +7,38 @@ class OrdersService {
   final String baseUrl = "https://ayni-api-v2.zeabur.app/api/v1/orders";
 
   Future<List> getAll() async {
-  final response = await http.get(
-    Uri.parse(baseUrl),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  );
+    final response = await http.get(
+      Uri.parse(baseUrl),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
 
-  if (response.statusCode == HttpStatus.ok) {
-    final jsonResponse = json.decode(response.body);
-    return jsonResponse.map((map) => Orders.fromJson(map)).toList();
-  } else {
-    return [];
+    if (response.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(response.body);
+      return jsonResponse.map((map) => Orders.fromJson(map)).toList();
+    } else {
+      return [];
+    }
   }
-}
+
+  Future<List> getByDescription(String? description) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl?description="$description"'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == HttpStatus.ok) {
+      //print('Orders Service: $description');
+      final jsonResponse = json.decode(response.body);
+      return jsonResponse.map((map) => Orders.fromJson(map)).toList();
+    } else {
+      //print('Orders Service: ${response.body}');
+      return [];
+    }
+  }
 
   Future post(Orders order) async {
     http.Response response = await http.post(
@@ -47,5 +65,18 @@ class OrdersService {
     if (response.statusCode != HttpStatus.noContent) {
       throw Exception('Failed to delete');
     }
+  }
+
+  Future<String> finalizeOrder(int? orderId) async {
+    final http.Response response =
+        await http.post(Uri.parse('$baseUrl/$orderId/finalizations'), headers: {
+      'Content-Type': 'application/json',
+    });
+    if (response.statusCode == HttpStatus.ok) {
+      return "Successfully Added";
+    } else {
+      //print('Orders Service error: ${response.body}');
+    }
+    return '';
   }
 }

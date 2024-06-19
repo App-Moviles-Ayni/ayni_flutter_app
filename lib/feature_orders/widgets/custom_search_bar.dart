@@ -7,13 +7,13 @@ class CustomSearchBar extends StatelessWidget {
   onQueryChanged(String newQuery) {
     callback(newQuery);
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
-        onChanged: onQueryChanged,
+        onSubmitted: onQueryChanged,
         decoration: const InputDecoration(
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),

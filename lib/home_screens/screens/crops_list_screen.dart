@@ -49,6 +49,17 @@ class _CropsListScreenState extends State<CropsListScreen> {
     });
   }
 
+  void _onQuery(String query) async {
+    setState(() {
+      _isLoading = true;
+    });
+    List<Products> products = await _productsService.getByName(query);
+    setState(() {
+      _products = products;
+      _isLoading = false;
+    });
+  }
+
   void _shuffleProducts() {
     setState(() {
       _shuffledProducts = List.of(_products);
@@ -64,10 +75,11 @@ class _CropsListScreenState extends State<CropsListScreen> {
       ),
       body: Column(
         children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.all(8.0),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: TextField(
-              decoration: InputDecoration(
+              onSubmitted: _onQuery,
+              decoration: const InputDecoration(
                 labelText: "Search",
                 hintText: "Search",
                 suffixIcon: Icon(Icons.search),

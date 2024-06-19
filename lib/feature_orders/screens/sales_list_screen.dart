@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:ayni_flutter_app/feature_orders/models/sales.dart';
 import 'package:ayni_flutter_app/feature_orders/services/sales_service.dart';
 import 'package:ayni_flutter_app/finance_screens/screens/transaction_panels.dart';
@@ -21,19 +19,45 @@ class SalesListScreen extends StatefulWidget {
 }
 
 class _SalesListScreenState extends State<SalesListScreen> {
+  final OrdersService _ordersService = OrdersService();
 
-  String query = "";
+  List _orders = [];
   bool result = false;
 
-  void onQueryChanged(String value) {
+  void onQuery(String query) async {
+    _orders = await _ordersService.getByDescription(query);
     setState(() {
-      query = value;
+      _orders = _orders;
     });
   }
+
+  void onDelete(int? id) async {
+    await _ordersService.delete(id);
+    reloadPage();
+  }
+
+  void onFinalize(int? id) async {
+    await _ordersService.finalizeOrder(id);
+    reloadPage();
+  }
+
+  void fetchData() async {
+    _orders = await _ordersService.getAll();
+    setState(() {
+      _orders = _orders;
+    });
+  }
+
   void reloadPage() {
     setState(() {
       result = !result;
     });
+  }
+
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
   }
 
   @override
@@ -53,9 +77,15 @@ class _SalesListScreenState extends State<SalesListScreen> {
       body: Column(
         children: [
           CustomSearchBar(callback: (value) {
-            onQueryChanged(value);
+            onQuery(value);
           }),
-          Expanded(child: SalesList(query: query, shouldFetchData: result, reloadPage: reloadPage))
+          Expanded(
+              child: SalesList(
+                  orders: _orders,
+                  reloadPage: reloadPage,
+                  ordersService: _ordersService,
+                  onDelete: onDelete,
+                  onFinalize: onFinalize,))
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -72,63 +102,56 @@ class _SalesListScreenState extends State<SalesListScreen> {
         tooltip: 'Add Order',
         child: const Icon(Icons.add, color: Colors.white),
       ),
-      bottomNavigationBar: BottomNavBar(currentIndex: 2, 
-        onTap: (index){
-          switch(index){
-            case 0:
-              Navigator.push(context, SlideTransitionPageRoute(page: ProductsListScreen()));
-              break;
-            case 1:
-              Navigator.push(context, SlideTransitionPageRoute(page: CropsListScreen()));
-              break;
-            case 2:
-              Navigator.push(context, SlideTransitionPageRoute(page: const SalesListScreen()));
-              break;
-            case 3:
-              Navigator.push(context, SlideTransitionPageRoute(page: TransactionListScreen2()));
-              break;
-          }
-        }),
+      bottomNavigationBar: BottomNavBar(
+          currentIndex: 2,
+          onTap: (index) {
+            switch (index) {
+              case 0:
+                Navigator.push(context,
+                    SlideTransitionPageRoute(page: ProductsListScreen()));
+                break;
+              case 1:
+                Navigator.push(
+                    context, SlideTransitionPageRoute(page: CropsListScreen()));
+                break;
+              case 2:
+                Navigator.push(context,
+                    SlideTransitionPageRoute(page: const SalesListScreen()));
+                break;
+              case 3:
+                Navigator.push(context,
+                    SlideTransitionPageRoute(page: TransactionListScreen2()));
+                break;
+            }
+          }),
     );
   }
 }
 
 class SalesList extends StatefulWidget {
   const SalesList(
-      {super.key, required this.query, required this.shouldFetchData, required this.reloadPage});
-  final String query;
-  final bool shouldFetchData;
+      {super.key,
+      required this.orders,
+      required this.reloadPage,
+      required this.ordersService,
+      required this.onDelete,
+      required this.onFinalize});
+  final List orders;
   final VoidCallback reloadPage;
+  final OrdersService ordersService;
+  final Function(int? id) onDelete;
+  final Function(int? id) onFinalize;
 
   @override
   State<SalesList> createState() => _SalesListState();
 }
 
 class _SalesListState extends State<SalesList> {
-  List _orders = [];
-  final OrdersService _ordersService = OrdersService();
-
-  void onDelete(int? id) async {
-    await _ordersService.delete(id);
-    widget.reloadPage();
-  }
-  void fetchData() async {
-    _orders = await _ordersService.getAll();
-    setState(() {
-      _orders = _orders;
-    });
-  }
-
-  @override
-  void initState() {
-    fetchData();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List>(
-        future: _ordersService.getAll(),
+        future: widget.ordersService.getAll(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -139,11 +162,13 @@ class _SalesListState extends State<SalesList> {
               child: Text("Something went wrong..."),
             );
           } else {
-            _orders = snapshot.data ?? [];
             return ListView.builder(
-                itemCount: _orders.length,
+                itemCount: widget.orders.length,
                 itemBuilder: (context, index) {
-                  return SalesItem(order: _orders[index], onDelete: onDelete);
+                  return SalesItem(
+                      order: widget.orders[index],
+                      onDelete: widget.onDelete,
+                      onFinalize: widget.onFinalize);
                 });
           }
         });
@@ -151,9 +176,14 @@ class _SalesListState extends State<SalesList> {
 }
 
 class SalesItem extends StatefulWidget {
-  const SalesItem({super.key, required this.order, required this.onDelete});
+  const SalesItem(
+      {super.key,
+      required this.order,
+      required this.onDelete,
+      required this.onFinalize});
   final Orders order;
   final Function(int?) onDelete;
+  final Function(int?) onFinalize;
 
   @override
   State<SalesItem> createState() => _SalesItemState();
@@ -162,8 +192,8 @@ class SalesItem extends StatefulWidget {
 class _SalesItemState extends State<SalesItem> {
   final SalesService _salesService = SalesService();
   Sales? _sale;
-  
-  void fetchSale() async{
+
+  void fetchSale() async {
     try {
       if (widget.order.saleId != null) {
         _sale = await _salesService.getSaleById(widget.order.saleId.toString());
@@ -215,19 +245,21 @@ class _SalesItemState extends State<SalesItem> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        subtitle: Text("Price: \$${widget.order.totalPrice.toString()} - Status: ${widget.order.status}"),
+        subtitle: Text(
+            "Price: \$${widget.order.totalPrice.toString()} - Status: ${widget.order.status}"),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                widget.onFinalize(widget.order.id);
+              },
               icon: const Icon(Icons.check, color: Colors.green),
             ),
             IconButton(
               onPressed: () {
-                ConfirmationDialog.showConfirmationDialog(
-                  context, 
-                  onConfirm: () => widget.onDelete(widget.order.id));
+                ConfirmationDialog.showConfirmationDialog(context,
+                    onConfirm: () => widget.onDelete(widget.order.id));
               },
               icon: const Icon(Icons.close, color: Colors.red),
             ),
