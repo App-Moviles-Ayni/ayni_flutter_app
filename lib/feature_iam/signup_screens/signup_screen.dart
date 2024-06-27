@@ -15,14 +15,14 @@ class SignupScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/images/ayni.png', height: 100),
-            SizedBox(height: 20),
-            Text('Stay on top of your finance with us.', textAlign: TextAlign.center, style: TextStyle(fontSize: 18)),
-            SizedBox(height: 10),
-            Text(
+            const SizedBox(height: 20),
+            const Text('Stay on top of your finance with us.', textAlign: TextAlign.center, style: TextStyle(fontSize: 18)),
+            const SizedBox(height: 10),
+            const Text(
               'We are your new financial Advisors to recommend the best products for you.',
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -30,11 +30,10 @@ class SignupScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => RegisterScreen()),
                 );
               },
-              child: Text('Create account'),
-               style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.green,
-    foregroundColor: Colors.black, // Utiliza backgroundColor en lugar de primary
-  ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.black,),
+              child: const Text('Create account'),
             ),
             TextButton(
               onPressed: () {
@@ -43,10 +42,9 @@ class SignupScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                 );
               },
-              child: Text('Login'),
-              style: ElevatedButton.styleFrom(
-    
-    foregroundColor: Colors.black,)
+              style: ElevatedButton.styleFrom(    
+                foregroundColor: Colors.black,),
+              child: const Text('Login'),
             ),
           ],
         ),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 
 class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +21,7 @@ class SplashScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset('assets/images/ayni.png', height: 300),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               
             ],
           ),
