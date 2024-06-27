@@ -17,4 +17,16 @@ class CropsService {
     }
     return [];
   }
+
+  Future<bool> createCrop(Map<String, dynamic> data) async {
+    http.Response response = await http.post(
+      Uri.parse(baseUrl),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+      },
+      body: json.encode(data),
+    );
+
+    return response.statusCode == HttpStatus.created;
+  }
 }
