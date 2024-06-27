@@ -29,4 +29,26 @@ class ProductsService {
     }
   
   }
+
+  Future<List<Products>> getByName(String name) async {
+    final http.Response response = await http.get(Uri.parse('$baseUrl?name="$name"'));
+
+     if (response.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(response.body);
+      print("ProductService jsonResponse: $jsonResponse");
+
+      if (jsonResponse is Map<String, dynamic> && jsonResponse.containsKey("results")) {
+        final List<dynamic> maps = jsonResponse["results"];
+        print("ProductService results: $maps");
+
+        return maps.map((map) => Products.fromJson(map)).toList();
+      } else if (jsonResponse is List<dynamic>) {
+        return jsonResponse.map((map) => Products.fromJson(map)).toList();
+      } else {
+        throw Exception('ProductService Unexpected JSON structure');
+      }
+    } else {
+      throw Exception('Failed to load products');
+    }
+  }
 }
