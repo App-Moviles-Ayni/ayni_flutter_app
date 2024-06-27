@@ -10,6 +10,7 @@ import 'package:ayni_flutter_app/shared/widgets/bottom_navigation_bar.dart';
 import 'package:ayni_flutter_app/feature_orders/widgets/confirmation_dialog.dart';
 import 'package:ayni_flutter_app/feature_orders/widgets/custom_search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SalesListScreen extends StatefulWidget {
   const SalesListScreen({super.key});
@@ -42,9 +43,14 @@ class _SalesListScreenState extends State<SalesListScreen> {
   }
 
   void fetchData() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final userId = sharedPreferences.getInt('userId');
+
     _orders = await _ordersService.getAll();
+    List filteredOrders = _orders.where(
+      (order) => order.acceptedBy == userId && order.status == 'pending').toList();
     setState(() {
-      _orders = _orders;
+      _orders = filteredOrders;
     });
   }
 
@@ -202,7 +208,6 @@ class _SalesItemState extends State<SalesItem> {
         });
       }
     } catch (e) {
-      print("Error fetching sale: $e");
     }
   }
 
@@ -240,7 +245,7 @@ class _SalesItemState extends State<SalesItem> {
               : const Placeholder(),
         ),
         title: Text(
-          widget.order.description.toString(),
+          '${_sale?.name}',
           style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,

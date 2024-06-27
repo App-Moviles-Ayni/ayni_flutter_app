@@ -39,7 +39,7 @@ class ConfirmationDialog {
                     },
                     style:
                         ElevatedButton.styleFrom(foregroundColor: Colors.green),
-                    child: Text('No'),
+                    child: const Text('No'),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -49,7 +49,7 @@ class ConfirmationDialog {
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.red,
                     ),
-                    child: Text('Yes'),
+                    child: const Text('Yes'),
                   ),
                 ],
               ),

@@ -7,8 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:ayni_flutter_app/home_screens/screens/crops_list_screen.dart';
 import 'package:ayni_flutter_app/home_screens/services/products_service.dart';
 import 'package:ayni_flutter_app/home_screens/models/products.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductsListScreen extends StatefulWidget {
+  const ProductsListScreen({super.key});
+
   @override
   _ProductsListScreenState createState() => _ProductsListScreenState();
 }
@@ -40,9 +43,15 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
   }
 
   Future<void> _fetchProducts() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final userId = sharedPreferences.getInt('userId');
+
     List<Products> products = await _productsService.getAll();
+    List<Products> filteredProducts = products.where(
+      (product) => product.userId == userId).toList();
+    
     setState(() {
-      _products = products;
+      _products = filteredProducts;
       _isLoading = false;
     });
   }
@@ -58,7 +67,6 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -163,7 +171,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                 const Padding(
                   padding: EdgeInsets.all(5.0),
                   child:
-                      Text('Products On Sale', style: TextStyle(fontSize: 24)),
+                      Text('Your products', style: TextStyle(fontSize: 24)),
                 ),
                 Expanded(
                   child: ListView.separated(
@@ -213,7 +221,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                 switch (index) {
                   case 0:
                     Navigator.push(context,
-                        SlideTransitionPageRoute(page: ProductsListScreen()));
+                        SlideTransitionPageRoute(page: const ProductsListScreen()));
                     break;
                   case 1:
                     Navigator.push(context,

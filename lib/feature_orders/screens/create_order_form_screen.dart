@@ -144,22 +144,6 @@ class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
                               imageUrl: _imageUrlController.text,
                               userId: _userId);
                           await _salesService.post(newSale);
-                          /*
-                    if (saleResponse.id != null) {
-                      final newOrder = Orders(
-                          description: _descriptionController.text,
-                          totalPrice: unitPrice * quantity,
-                          quantity: quantity,
-                          imageUrl: _imageUrlController.text,
-                          saleId: saleResponse.id,
-                          orderedBy: _userId,
-                          acceptedBy: _userId,
-                          orderedDate: DateTime.now().millisecondsSinceEpoch,
-                          status: "Pending");
-
-                      await _ordersService.post(newOrder);
-                    }
-                    */
                           Navigator.pop(context, true);
                         }
                       },

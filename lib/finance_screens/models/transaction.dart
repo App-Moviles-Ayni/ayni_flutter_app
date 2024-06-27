@@ -1,8 +1,8 @@
 class Transaction {
   final int id;
   final String costName;
-  final String date;
   final String description;
+  final String date;
   final String transactionType;
   final double price;
   final String quantity;
@@ -11,8 +11,8 @@ class Transaction {
   const Transaction({
     required this.id,
     required this.costName,
-    required this.date,
     required this.description,
+    required this.date,
     required this.transactionType,
     required this.price,
     required this.quantity,
@@ -22,8 +22,8 @@ class Transaction {
   Transaction.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         costName = json["costName"],
-        date = json["date"],
         description = json["description"],
+        date = json["date"],
         transactionType = json["transactionType"],
         price = json["price"],
         quantity = json["quantity"],
@@ -32,8 +32,8 @@ class Transaction {
   Map<String, dynamic> toJson() => {
         "id": id,
         "costName": costName,
-        "date": date,
         "description": description,
+        "date": date,
         "transactionType": transactionType,
         "price": price,
         "quantity": quantity,

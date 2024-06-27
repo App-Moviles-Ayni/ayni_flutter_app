@@ -16,7 +16,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SplashScreen()
+      home: const SplashScreen()
       //home: ProductsListScreen()
     );
   }

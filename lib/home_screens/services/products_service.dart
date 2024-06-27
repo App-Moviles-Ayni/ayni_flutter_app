@@ -12,11 +12,9 @@ class ProductsService {
 
      if (response.statusCode == HttpStatus.ok) {
       final jsonResponse = json.decode(response.body);
-      print("jsonResponse: $jsonResponse");
 
       if (jsonResponse is Map<String, dynamic> && jsonResponse.containsKey("results")) {
         final List<dynamic> maps = jsonResponse["results"];
-        print("results: $maps");
 
         return maps.map((map) => Products.fromJson(map)).toList();
       } else if (jsonResponse is List<dynamic>) {
@@ -35,11 +33,9 @@ class ProductsService {
 
      if (response.statusCode == HttpStatus.ok) {
       final jsonResponse = json.decode(response.body);
-      print("ProductService jsonResponse: $jsonResponse");
 
       if (jsonResponse is Map<String, dynamic> && jsonResponse.containsKey("results")) {
         final List<dynamic> maps = jsonResponse["results"];
-        print("ProductService results: $maps");
 
         return maps.map((map) => Products.fromJson(map)).toList();
       } else if (jsonResponse is List<dynamic>) {

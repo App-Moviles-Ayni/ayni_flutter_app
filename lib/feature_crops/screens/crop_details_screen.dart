@@ -84,7 +84,7 @@ class CropDetailsScreen extends StatelessWidget {
               break;
             case 2:
               Navigator.push(context, MaterialPageRoute(
-                builder: (context) => SalesListScreen()));
+                builder: (context) => const SalesListScreen()));
               break;
             case 3:
               Navigator.push(context, MaterialPageRoute(

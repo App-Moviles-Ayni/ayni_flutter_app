@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:ayni_flutter_app/home_screens/models/products.dart';
 import 'package:ayni_flutter_app/home_screens/screens/crops_add_screen.dart';
 import 'package:ayni_flutter_app/home_screens/services/products_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CropsListScreen extends StatefulWidget {
   @override
@@ -42,9 +43,15 @@ class _CropsListScreenState extends State<CropsListScreen> {
   }
 
   Future<void> _fetchProducts() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final userId = sharedPreferences.getInt('userId');
+
     List<Products> products = await _productsService.getAll();
+    List<Products> filteredProducts = products.where(
+      (product) => product.userId == userId).toList();
+
     setState(() {
-      _products = products;
+      _products = filteredProducts;
       _isLoading = false;
     });
   }
@@ -89,57 +96,6 @@ class _CropsListScreenState extends State<CropsListScreen> {
               ),
             ),
           ),
-          /*const Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text('Hot Deals', style: TextStyle(fontSize: 24)),
-            ),
-          ),
-          SizedBox(
-            height: 200,
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _shuffledProducts.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CropDetailsScreen(product: _shuffledProducts[index]),
-                            ),
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10.0),
-                                child: Image.network(
-                                  _shuffledProducts[index].imageUrl,
-                                  width: 150,
-                                  height: 150,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(height: 9.0),
-                              Text(
-                                _shuffledProducts[index].name,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-          ),*/
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

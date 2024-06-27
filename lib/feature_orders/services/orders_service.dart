@@ -67,7 +67,7 @@ class OrdersService {
     }
   }
 
-  Future<String> finalizeOrder(int? orderId) async {
+  Future finalizeOrder(int? orderId) async {
     final http.Response response =
         await http.post(Uri.parse('$baseUrl/$orderId/finalizations'), headers: {
       'Content-Type': 'application/json',
