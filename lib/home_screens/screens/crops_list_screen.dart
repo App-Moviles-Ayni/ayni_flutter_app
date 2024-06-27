@@ -114,6 +114,51 @@ class _CropsListScreenState extends State<CropsListScreen> {
 
   Widget _buildMainContent() {
     return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('Hot Deals', style: TextStyle(fontSize: 24)),
+            ),
+          ),
+          Container(
+            height: 200,
+            child: _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _shuffledProducts.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(
+                                _shuffledProducts[index].imageUrl,
+                                width: 150,
+                                height: 150,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(height: 9.0),
+                            Text(
+                              _shuffledProducts[index].name,
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+          ),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -153,7 +198,10 @@ class _CropsListScreenState extends State<CropsListScreen> {
                 ),
               ],
             ),
-          );
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildSearchResults() {
