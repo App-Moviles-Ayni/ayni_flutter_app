@@ -19,19 +19,23 @@ class _CropsListScreenState extends State<CropsListScreen> {
   final ProductsService _productsService = ProductsService();
   List<Products> _products = [];
   List<Products> _shuffledProducts = [];
+  List<Products> _searchResults = [];
   bool _isLoading = true;
   Timer? _timer;
+  TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _fetchProducts();
     _startShuffleTimer();
+    _searchController.addListener(_onSearchChanged);
   }
 
   @override
   void dispose() {
     _timer?.cancel();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -45,6 +49,7 @@ class _CropsListScreenState extends State<CropsListScreen> {
     List<Products> products = await _productsService.getAll();
     setState(() {
       _products = products;
+      _shuffledProducts = List.of(products);
       _isLoading = false;
     });
   }
@@ -62,8 +67,20 @@ class _CropsListScreenState extends State<CropsListScreen> {
 
   void _shuffleProducts() {
     setState(() {
-      _shuffledProducts = List.of(_products);
       _shuffledProducts.shuffle(Random());
+    });
+  }
+
+  void _onSearchChanged() {
+    String searchQuery = _searchController.text.toLowerCase();
+    setState(() {
+      if (searchQuery.isEmpty) {
+        _searchResults.clear();
+      } else {
+        _searchResults = _products.where((product) {
+          return product.name.toLowerCase().contains(searchQuery);
+        }).toList();
+      }
     });
   }
 
@@ -78,6 +95,7 @@ class _CropsListScreenState extends State<CropsListScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              controller: _searchController,  
               onSubmitted: _onQuery,
               decoration: const InputDecoration(
                 labelText: "Search",
@@ -89,6 +107,28 @@ class _CropsListScreenState extends State<CropsListScreen> {
               ),
             ),
           ),
+          _searchController.text.isNotEmpty ? _buildSearchResults() : _buildMainContent(),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CropsAddScreen()),
+          );
+        },
+        child: Icon(Icons.add, color: Colors.white),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
+  Widget _buildMainContent() {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Align(
           /*const Align(
             alignment: Alignment.centerLeft,
             child: Padding(
@@ -193,11 +233,37 @@ class _CropsListScreenState extends State<CropsListScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CropsAddScreen()),
+    );
+  }
+
+  Widget _buildSearchResults() {
+    return Expanded(
+      child: ListView.separated(
+        itemCount: _searchResults.length,
+        separatorBuilder: (context, index) => Divider(),
+        itemBuilder: (context, index) {
+          return ListTile(
+            contentPadding: EdgeInsets.all(8.0),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(_searchResults[index].name, style: TextStyle(fontSize: 16)),
+                Text(
+                  _searchResults[index].description.length > 50
+                      ? _searchResults[index].description.substring(0, 50) + '...'
+                      : _searchResults[index].description,
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
+            trailing: ClipOval(
+              child: Image.network(
+                _searchResults[index].imageUrl,
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              ),
+            ),
           );
         },
         backgroundColor: Colors.green,
@@ -233,4 +299,3 @@ BottomNavBar(currentIndex: 1,
     );
   }
 }
-
