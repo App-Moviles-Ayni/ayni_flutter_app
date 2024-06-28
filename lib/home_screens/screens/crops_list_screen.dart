@@ -8,8 +8,11 @@ import 'package:ayni_flutter_app/home_screens/services/products_service.dart';
 import 'package:ayni_flutter_app/finance_screens/screens/transaction_panels.dart';
 import 'package:ayni_flutter_app/home_screens/screens/products_list_screen.dart';
 import 'package:ayni_flutter_app/shared/widgets/bottom_navigation_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CropsListScreen extends StatefulWidget {
+  const CropsListScreen({super.key});
+
   @override
   _CropsListScreenState createState() => _CropsListScreenState();
 }
@@ -21,7 +24,7 @@ class _CropsListScreenState extends State<CropsListScreen> {
   List<Products> _searchResults = [];
   bool _isLoading = true;
   Timer? _timer;
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -39,16 +42,22 @@ class _CropsListScreenState extends State<CropsListScreen> {
   }
 
   void _startShuffleTimer() {
-    _timer = Timer.periodic(Duration(seconds: 10), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 10), (Timer timer) {
       _shuffleProducts();
     });
   }
 
   Future<void> _fetchProducts() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final userId = sharedPreferences.getInt('userId');
+
     List<Products> products = await _productsService.getAll();
+    List<Products> filteredProducts = products.where((product) {
+      return product.userId == userId;
+    }).toList();
     setState(() {
-      _products = products;
-      _shuffledProducts = List.of(products);
+      _products = filteredProducts;
+      _shuffledProducts = List.of(filteredProducts);
       _isLoading = false;
     });
   }
@@ -76,10 +85,10 @@ class _CropsListScreenState extends State<CropsListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Crops')),
+        title: const Center(child: Text('Crops')),
         actions: <Widget>[
           TextButton(
-            child: Text('Filter'),
+            child: const Text('Filter'),
             onPressed: () {},
           ),
         ],
@@ -90,7 +99,7 @@ class _CropsListScreenState extends State<CropsListScreen> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _searchController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Search",
                 hintText: "Search",
                 suffixIcon: Icon(Icons.search),
@@ -110,8 +119,8 @@ class _CropsListScreenState extends State<CropsListScreen> {
             MaterialPageRoute(builder: (context) => CropsAddScreen()),
           );
         },
-        child: Icon(Icons.add, color: Colors.white),
         backgroundColor: Colors.green,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     bottomNavigationBar: BottomNavBar(
         currentIndex: 0,
@@ -127,19 +136,19 @@ class _CropsListScreenState extends State<CropsListScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => CropsListScreen()));
+                      builder: (context) => const CropsListScreen()));
               break;
             case 2:
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => SalesListScreen()));
+                      builder: (context) => const SalesListScreen()));
               break;
             case 3:
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => TransactionListScreen2()));
+                      builder: (context) => const TransactionListScreen2()));
               break;
           }
         },
@@ -152,17 +161,17 @@ class _CropsListScreenState extends State<CropsListScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Align(
+          const Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Text('Hot Deals', style: TextStyle(fontSize: 24)),
             ),
           ),
           Container(
             height: 200,
             child: _isLoading
-                ? Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: _shuffledProducts.length,
@@ -180,10 +189,10 @@ class _CropsListScreenState extends State<CropsListScreen> {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(height: 9.0),
+                            const SizedBox(height: 9.0),
                             Text(
                               _shuffledProducts[index].name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                               ),
                             ),
@@ -197,15 +206,15 @@ class _CropsListScreenState extends State<CropsListScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Text('All my products', style: TextStyle(fontSize: 24)),
                 ),
                 Expanded(
                   child: GridView.builder(
                     padding: const EdgeInsets.all(8.0),
                     itemCount: _products.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
@@ -223,9 +232,9 @@ class _CropsListScreenState extends State<CropsListScreen> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          SizedBox(height: 9.0),
+                          const SizedBox(height: 9.0),
                           Text(_products[index].name,
-                              style: TextStyle(fontSize: 16)),
+                              style: const TextStyle(fontSize: 16)),
                         ],
                       );
                     },
@@ -243,19 +252,19 @@ class _CropsListScreenState extends State<CropsListScreen> {
     return Expanded(
       child: ListView.separated(
         itemCount: _searchResults.length,
-        separatorBuilder: (context, index) => Divider(),
+        separatorBuilder: (context, index) => const Divider(),
         itemBuilder: (context, index) {
           return ListTile(
-            contentPadding: EdgeInsets.all(8.0),
+            contentPadding: const EdgeInsets.all(8.0),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(_searchResults[index].name, style: TextStyle(fontSize: 16)),
+                Text(_searchResults[index].name, style: const TextStyle(fontSize: 16)),
                 Text(
                   _searchResults[index].description.length > 50
                       ? _searchResults[index].description.substring(0, 50) + '...'
                       : _searchResults[index].description,
-                  style: TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: Colors.grey),
                 ),
               ],
             ),

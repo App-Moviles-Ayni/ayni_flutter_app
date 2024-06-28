@@ -7,8 +7,11 @@ import 'package:ayni_flutter_app/home_screens/services/products_service.dart';
 import 'package:ayni_flutter_app/home_screens/models/products.dart';
 import 'package:ayni_flutter_app/finance_screens/screens/transaction_panels.dart';
 import 'package:ayni_flutter_app/shared/widgets/bottom_navigation_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductsListScreen extends StatefulWidget {
+  const ProductsListScreen({super.key});
+
   @override
   _ProductsListScreenState createState() => _ProductsListScreenState();
 }
@@ -20,7 +23,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
   List<Products> _searchResults = [];
   bool _isLoading = true;
   Timer? _timer;
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -38,16 +41,22 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
   }
 
   void _startShuffleTimer() {
-    _timer = Timer.periodic(Duration(seconds: 10), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 10), (Timer timer) {
       _shuffleProducts();
     });
   }
 
   Future<void> _fetchProducts() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final userId = sharedPreferences.getInt('userId');
+    
     List<Products> products = await _productsService.getAll();
+    List<Products> filteredProducts = products.where((product) {
+      return product.userId == userId;
+    }).toList();
     setState(() {
-      _products = products;
-      _shuffledProducts = List.of(products); // Inicialmente, todos los productos están visibles
+      _products = filteredProducts;
+      _shuffledProducts = List.of(filteredProducts);
       _isLoading = false;
     });
   }
@@ -76,26 +85,26 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.menu),
+          icon: const Icon(Icons.menu),
           onPressed: () {},
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {},
           ),
         ],
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
-                      'Welcome, Jose.',
+                      'Welcome',
                       style: TextStyle(fontSize: 35),
                       textAlign: TextAlign.left,
                     ),
@@ -110,7 +119,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                       ),
                       child: Column(
                         children: [
-                          Text('Find your product',
+                          const Text('Find your product',
                               style:
                                   TextStyle(fontSize: 20, color: Colors.white)),
                           Row(
@@ -129,7 +138,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                                 ),
                               ),
                               IconButton(
-                                icon: Icon(Icons.search, color: Colors.white),
+                                icon: const Icon(Icons.search, color: Colors.white),
                                 onPressed: _onSearchChanged,
                               ),
                             ],
@@ -148,16 +157,16 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('Latest Crops', style: TextStyle(fontSize: 24)),
+                                  const Text('Latest Crops', style: TextStyle(fontSize: 24)),
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => CropsListScreen()),
+                                            builder: (context) => const CropsListScreen()),
                                       );
                                     },
-                                    child: Text('See All ->',
+                                    child: const Text('See All ->',
                                         style: TextStyle(color: Colors.red)),
                                   ),
                                 ],
@@ -185,11 +194,11 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                                           top: 8.0,
                                           left: 8.0,
                                           child: Container(
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 8.0, vertical: 4.0),
                                             child: Text(
                                               _shuffledProducts[index].name,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 16,
                                                 color: Colors.white,
                                               ),
@@ -202,33 +211,33 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                                 },
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
+                            const Padding(
+                              padding: EdgeInsets.all(5.0),
                               child: Text('Products On Sale',
                                   style: TextStyle(fontSize: 24)),
                             ),
                             ListView.separated(
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: _products.length,
                               separatorBuilder: (context, index) {
-                                return Divider();
+                                return const Divider();
                               },
                               itemBuilder: (context, index) {
                                 return ListTile(
-                                  contentPadding: EdgeInsets.all(8.0),
+                                  contentPadding: const EdgeInsets.all(8.0),
                                   title: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(_products[index].name,
-                                          style: TextStyle(fontSize: 16)),
+                                          style: const TextStyle(fontSize: 16)),
                                       Text(
                                         _products[index].description.length > 50
                                             ? _products[index].description
                                                     .substring(0, 50) +
                                                 '...'
                                             : _products[index].description,
-                                        style: TextStyle(color: Colors.grey),
+                                        style: const TextStyle(color: Colors.grey),
                                       ),
                                     ],
                                   ),
@@ -249,19 +258,19 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
           switch(index){
             case 0:
               Navigator.push(context, MaterialPageRoute(
-                builder: (context) => ProductsListScreen()));
+                builder: (context) => const ProductsListScreen()));
               break;
             case 1:
               Navigator.push(context, MaterialPageRoute(
-                builder: (context) => CropsListScreen()));
+                builder: (context) => const CropsListScreen()));
               break;
             case 2:
               Navigator.push(context, MaterialPageRoute(
-                builder: (context) => SalesListScreen()));
+                builder: (context) => const SalesListScreen()));
               break;
             case 3:
               Navigator.push(context, MaterialPageRoute(
-                builder: (context) => TransactionListScreen2()));
+                builder: (context) => const TransactionListScreen2()));
               break;
           }
         }),
@@ -271,21 +280,21 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
   Widget _buildSearchResults() {
     return ListView.separated(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: _searchResults.length,
-      separatorBuilder: (context, index) => Divider(),
+      separatorBuilder: (context, index) => const Divider(),
       itemBuilder: (context, index) {
         return ListTile(
-          contentPadding: EdgeInsets.all(8.0),
+          contentPadding: const EdgeInsets.all(8.0),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(_searchResults[index].name, style: TextStyle(fontSize: 16)),
+              Text(_searchResults[index].name, style: const TextStyle(fontSize: 16)),
               Text(
                 _searchResults[index].description.length > 50
                     ? _searchResults[index].description.substring(0, 50) + '...'
                     : _searchResults[index].description,
-                style: TextStyle(color: Colors.grey),
+                style: const TextStyle(color: Colors.grey),
               ),
             ],
           ),

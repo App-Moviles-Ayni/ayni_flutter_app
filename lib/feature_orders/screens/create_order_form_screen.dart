@@ -2,6 +2,7 @@ import 'package:ayni_flutter_app/feature_orders/models/sales.dart';
 import 'package:ayni_flutter_app/feature_orders/services/sales_service.dart';
 import 'package:ayni_flutter_app/feature_orders/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateOrderFormScreen extends StatefulWidget {
   const CreateOrderFormScreen({super.key});
@@ -20,8 +21,6 @@ class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
   final TextEditingController _unitPriceController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _imageUrlController = TextEditingController();
-
-  final int _userId = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +141,7 @@ class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
                               unitPrice: unitPrice,
                               quantity: quantity,
                               imageUrl: _imageUrlController.text,
-                              userId: _userId);
+                              userId: await getUserId());
                           await _salesService.post(newSale);
                           Navigator.pop(context, true);
                         }
@@ -162,4 +161,9 @@ class _CreateOrderFormScreenState extends State<CreateOrderFormScreen> {
           )),
     );
   }
+}
+
+Future<int?> getUserId() async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+  return sharedPreferences.getInt('userId');
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CropsAddScreen extends StatefulWidget {
+  const CropsAddScreen({super.key});
+
   @override
   _CropsAddScreenState createState() => _CropsAddScreenState();
 }
